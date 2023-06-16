@@ -411,6 +411,11 @@ impl MetadataRevision {
     pub fn vendor_data(&self) -> &[VendorData] {
         &self.vendor_data
     }
+
+    /// Consume [`Self`], returning ownership of the inner data.
+    pub fn into_inner(self) -> (Vec<Tag>, Vec<Visual>, Vec<VendorData>) {
+        (self.tags, self.visuals, self.vendor_data)
+    }
 }
 
 /// `MetadataBuilder` is the builder for `Metadata` revisions.
