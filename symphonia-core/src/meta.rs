@@ -471,6 +471,11 @@ impl<'a> Metadata<'a> {
         self.revisions.front()
     }
 
+    /// Consume [`Self`], returning the current, and therefore oldest, revision of the metadata.
+    pub fn into_current(self) -> Option<MetadataRevision> {
+        self.revisions.pop_front()
+    }
+
     /// Skips to, and gets an immutable reference to the latest, and therefore newest, revision of the metadata.
     pub fn skip_to_latest(&mut self) -> Option<&MetadataRevision> {
         loop {
@@ -479,6 +484,16 @@ impl<'a> Metadata<'a> {
             }
         }
         self.current()
+    }
+
+    /// Consume [`Self`], then skip and get the latest, and therefore newest, revision of the metadata.
+    pub fn into_latest(mut self) -> Option<MetadataRevision> {
+        loop {
+            if self.pop().is_none() {
+                break;
+            }
+        }
+        self.into_current()
     }
 
     /// If there are newer `Metadata` revisions, advances the `MetadataLog` by discarding the
