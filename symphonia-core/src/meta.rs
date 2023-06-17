@@ -522,6 +522,11 @@ impl MetadataLog {
         Metadata { revisions: &mut self.revisions }
     }
 
+    /// Consumes [`Self`], returning the inner metadata.
+    pub fn into_inner(self) -> VecDeque<MetadataRevision> {
+    	self.revisions
+    }
+
     /// Pushes a new `Metadata` revision onto the log.
     pub fn push(&mut self, rev: MetadataRevision) {
         self.revisions.push_back(rev);
