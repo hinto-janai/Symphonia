@@ -87,17 +87,20 @@ A status of *Excellent* is only assigned after the feature passes all compliance
 
 | Format   | Status    | Gapless* | Feature Flag | Default | Crate                       |
 |----------|-----------|----------|--------------|---------|-----------------------------|
+| AIFF     | Great     | Yes      | `aiff`       | No      | [`symphonia-format-riff`]   |
+| CAF      | Good      | No       | `caf`        | No      | [`symphonia-format-caf`]    |
 | ISO/MP4  | Great     | No       | `isomp4`     | No      | [`symphonia-format-isomp4`] |
 | MKV/WebM | Good      | No       | `mkv`        | Yes     | [`symphonia-format-mkv`]    |
 | OGG      | Great     | Yes      | `ogg`        | Yes     | [`symphonia-format-ogg`]    |
-| Wave     | Excellent | Yes      | `wav`        | Yes     | [`symphonia-format-wav`]    |
+| Wave     | Excellent | Yes      | `wav`        | Yes     | [`symphonia-format-riff`]   |
 
 \* Gapless playback requires support from both the demuxer and decoder.
 
+[`symphonia-format-caf`]: https://docs.rs/symphonia-format-caf
 [`symphonia-format-isomp4`]: https://docs.rs/symphonia-format-isomp4
-[`symphonia-format-ogg`]: https://docs.rs/symphonia-format-ogg
-[`symphonia-format-wav`]: https://docs.rs/symphonia-format-wav
 [`symphonia-format-mkv`]: https://docs.rs/symphonia-format-mkv
+[`symphonia-format-ogg`]: https://docs.rs/symphonia-format-ogg
+[`symphonia-format-riff`]: https://docs.rs/symphonia-format-riff
 
 > **Tip:** All formats can be enabled with the `all-formats` feature flag.
 
@@ -158,6 +161,18 @@ In addition to the safety guarantees afforded by Rust, Symphonia aims to:
 Symphonia aims to be comparable to, or faster than, popular open-source C-based implementations. Currently, Symphonia's decoders are generally +/-15% the performance of FFMpeg. However, the exact range will depend strongly on the codec, which features of the codec are being leveraged in the encoding, the Rust compiler version, and the CPU architecture being compiled for.
 
 See the [benchmarks](https://github.com/pdeljanov/Symphonia/blob/master/BENCHMARKS.md) for more information.
+
+### Optimizations
+
+At this time, SIMD optimizations are not enabled by default. Enabling any SIMD support feature flags will pull in the `rustfft` dependency.
+
+| Instruction Set | Feature Flag    | Default |
+|-----------------|-----------------|---------|
+| SSE             | `opt-simd-sse`  | No      |
+| AVX             | `opt-simd-avx`  | No      |
+| Neon            | `opt-simd-neon` | No      |
+
+> **Tip:** All SIMD optimizations can be enabled with the `opt-simd` feature flag.
 
 ## Examples
 

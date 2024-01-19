@@ -1,5 +1,5 @@
 // Symphonia
-// Copyright (c) 2019-2022 The Project Symphonia Developers.
+// Copyright (c) 2019-2024 The Project Symphonia Developers.
 //
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -14,14 +14,7 @@
 #![allow(clippy::identity_op)]
 #![allow(clippy::manual_range_contains)]
 
-mod common;
+mod chunks;
+mod demuxer;
 
-#[cfg(feature = "aiff")]
-mod aiff;
-#[cfg(feature = "wav")]
-mod wave;
-
-#[cfg(feature = "aiff")]
-pub use aiff::AiffReader;
-#[cfg(feature = "wav")]
-pub use wave::WavReader;
+pub use demuxer::CafReader;

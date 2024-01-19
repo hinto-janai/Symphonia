@@ -26,6 +26,8 @@
 //!
 //! | Format   | Feature Flag | Gapless* | Default |
 //! |----------|--------------|----------|---------|
+//! | AIFF     | `aiff`       | Yes      | No      |
+//! | CAF      | `caf`        | No       | No      |
 //! | ISO/MP4  | `isomp4`     | No       | No      |
 //! | MKV/WebM | `mkv`        | No       | Yes     |
 //! | OGG      | `ogg`        | Yes      | Yes     |
@@ -63,6 +65,20 @@
 //! * ISO/MP4
 //! * RIFF
 //! * Vorbis Comment (in OGG & FLAC)
+//!
+//! ## Optimizations
+//!
+//! SIMD optimizations are **not** enabled by default. They may be enabled on a per-instruction
+//! set basis using the following feature flags. Enabling any SIMD support feature flags will pull
+//! in the `rustfft` dependency.
+//!
+//! | Instruction Set | Feature Flag    | Default |
+//! |-----------------|-----------------|---------|
+//! | SSE             | `opt-simd-sse`  | No      |
+//! | AVX             | `opt-simd-avx`  | No      |
+//! | Neon            | `opt-simd-neon` | No      |
+//!
+//! **Tip:** All SIMD optimizations can be enabled with the `opt-simd` feature flag.
 //!
 //! # Usage
 //!
@@ -155,6 +171,8 @@ pub mod default {
         pub use symphonia_bundle_mp3::MpaReader;
         #[cfg(feature = "aac")]
         pub use symphonia_codec_aac::AdtsReader;
+        #[cfg(feature = "caf")]
+        pub use symphonia_format_caf::CafReader;
         #[cfg(feature = "isomp4")]
         pub use symphonia_format_isomp4::IsoMp4Reader;
         #[cfg(feature = "mkv")]
@@ -164,7 +182,7 @@ pub mod default {
         #[cfg(feature = "aiff")]
         pub use symphonia_format_riff::AiffReader;
         #[cfg(feature = "wav")]
-        pub use symphonia_format_wav::WavReader;
+        pub use symphonia_format_riff::WavReader;
 
         #[deprecated = "use `default::formats::MpaReader` instead"]
         #[cfg(any(feature = "mp1", feature = "mp2", feature = "mp3"))]
@@ -251,6 +269,9 @@ pub mod default {
         // Formats
         #[cfg(feature = "aac")]
         probe.register_all::<formats::AdtsReader>();
+
+        #[cfg(feature = "caf")]
+        probe.register_all::<formats::CafReader>();
 
         #[cfg(feature = "flac")]
         probe.register_all::<formats::FlacReader>();
